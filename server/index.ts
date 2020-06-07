@@ -13,7 +13,15 @@ const startServer = async () => {
     await setupDbConnection();
 
     const server = express();
-
+    server.get("/*", async (req: any, res, next) => {
+      try {
+        req.locals = {};
+        req.locals.context = {};
+        app.render(req, res, "/");
+      } catch (e) {
+        next(e);
+      }
+    });
     server.all("*", (req, res) => {
       return handle(req, res);
     });

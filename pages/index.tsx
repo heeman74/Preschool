@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import Link from "next/link";
+// import Link from "next/link";
+import { Route, Link, Switch } from 'react-router-dom';
+import AddChild from "./addChild";
 
 class Preschool extends React.Component {
   static getInitialProps({ reduxStore, req }) {
@@ -24,9 +26,11 @@ class Preschool extends React.Component {
   render() {
     return (
       <div>
-        <Link href="/addChild">
-          <a>Register a Child</a>
-        </Link>
+        <Link to='/addChild'>Register a Child</Link>
+
+        <Switch>
+          <Route path='/addChild' exact component={AddChild} />
+        </Switch>
       </div>
     );
   }

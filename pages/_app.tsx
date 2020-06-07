@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import withReduxSaga from "next-redux-saga";
-
+import withReactRouter from '../lib/with-react-router';
 class MyApp extends App {
   constructor(props) {
     super(props);
@@ -27,4 +27,4 @@ class MyApp extends App {
   }
 }
 
-export default withReduxStore(withReduxSaga(MyApp));
+export default withReduxStore(withReduxSaga(withReactRouter(MyApp)));
