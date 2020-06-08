@@ -6,6 +6,9 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import withReduxSaga from "next-redux-saga";
 import withReactRouter from '../lib/with-react-router';
+import 'react-datepicker/dist/react-datepicker.css';
+
+
 class MyApp extends App {
   constructor(props) {
     super(props);
