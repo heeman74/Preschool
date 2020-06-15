@@ -5,7 +5,7 @@ import React, { FunctionComponent } from 'react';
 interface InputDataPickerProps {
     name: string,
     startDate: Date,
-    handleChange: () => void,
+    handleChange: (data: Date) => void,
     labelTitle: string,
 }
 
