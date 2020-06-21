@@ -2,7 +2,7 @@ import React from "react";
 import InputField from "components/inputField";
 import moment from 'moment';
 import InputDatePicker from "components/inputDatePicker";
-
+import axios from 'axios';
 
 interface AddChildState {
   firstName: string;
@@ -14,7 +14,7 @@ interface AddChildState {
   address: string,
   city: string,
   state: string,
-  zipcode: number | null,
+  zipcode: string | null,
   doB: Date;
   sex: string;
 
@@ -38,7 +38,7 @@ class AddChild extends React.Component<AddChildProps, AddChildState> {
       address: '',
       city: '',
       state: '',
-      zipcode: null,
+      zipcode: '',
       doB: new Date(),
     }
   }
@@ -50,11 +50,30 @@ class AddChild extends React.Component<AddChildProps, AddChildState> {
     })
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    } as unknown as Pick<AddChildState, keyof AddChildState>)
+    let zipCodeValue;
+    console.log({ name })
+    if (name === 'zipcode' && value.length >= 5) {
+      zipCodeValue = value.slice(0, 5);
+      try {
+        console.log({ zipCodeValue });
+        const { data } = await axios.get(`/children/city-state/${+zipCodeValue}`);
+
+        console.log(data);
+        this.setState({
+          city: data.CityStateLookupResponse.ZipCode.City._text,
+          state: data.CityStateLookupResponse.ZipCode.State._text,
+          zipcode: zipCodeValue,
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      this.setState({
+        [name]: value,
+      } as unknown as Pick<AddChildState, keyof AddChildState>)
+    }
 
   }
   render() {
