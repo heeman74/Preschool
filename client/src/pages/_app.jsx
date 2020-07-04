@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import withReduxSaga from "./node_modules/next-redux-saga";
+import { ApolloProvider } from "@apollo/react-hooks";
 
 class MyApp extends App {
   constructor(props) {
@@ -20,7 +21,9 @@ class MyApp extends App {
           loading={<Component {...pageProps} />}
           persistor={this.persistor}
         >
-          <Component {...pageProps} />
+          <ApolloProvider client={client}>
+            <Component {...pageProps} />
+          </ApolloProvider>
         </PersistGate>
       </Provider>
     );

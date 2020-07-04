@@ -2,6 +2,9 @@ import express from "express";
 import { setupDbConnection } from "./src/db/models";
 import childrenRoutes from "./src/route/children";
 import next from "next";
+import { buildSchema } from "graphql";
+import graphqlHTTP from "express-graphql";
+
 const port = parseInt((process.env as any).PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -13,6 +16,21 @@ const startServer = async () => {
     await setupDbConnection();
 
     const server = express();
+    const schema = buildSchema(`
+    type Query {
+      hello: String
+    }`);
+
+    // The root provides a resolver for each API endpoint
+    const root = {
+      hello: () => {
+        return "Hello World!";
+      },
+    };
+    server.use(
+      "/graphql",
+      graphqlHTTP({ schema, rootValue: root, graphiql: true })
+    );
     server.use("/children", childrenRoutes);
     server.get("/*", async (req: any, res, next) => {
       try {
